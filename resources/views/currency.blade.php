@@ -40,13 +40,13 @@
                         <td>{{ $currency->char_code }}</td>
                         <td></td>
                         <td></td>
-                        {{--@if ($currency->lastRate()->date )--}}
-                            {{--<td>{{ $currency->lastRate()->date->format('d-m-Y') }}</td>--}}
-                            {{--<td>{{ $currency->lastRate()->price }}</td>--}}
-                        {{--@else--}}
-                            {{--<td></td>--}}
-                            {{--<td></td>--}}
-                        {{--@endif--}}
+                        @if ($currency->lastRate() and $currency->lastRate()->date )
+                            <td>{{ $currency->lastRate()->date }}</td>
+                            <td>{{ $currency->lastRate()->price }}</td>
+                        @else
+                            <td></td>
+                            <td></td>
+                        @endif
 
 
 {{--                        <td>{{ $currency->lastRate()->price }}</td>--}}
