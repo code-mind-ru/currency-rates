@@ -38,6 +38,8 @@ class updateCurrencyRatio extends Command
         parent::__construct();
     }
 
+
+
     /**
      * Execute the console command.
      *
@@ -61,32 +63,13 @@ class updateCurrencyRatio extends Command
             $aCode[] = $currency->cbr_code;
         }
 
-        if($dateTo and $aCode){
-            $cbrCode = array_shift($aCode);
-            $result = (new CurrencyPeriod())
-                ->setDateFrom($date)
-                ->setDateTo($dateTo)
-                ->setCurrency($cbrCode)
-                ->request()
-                ->getResult();
 
-            foreach ($result['records'] as $record){
-                $currencyRatio = CurrencyRatio::query()->firstOrCreate(
-                    [
-                        'char_code' =>  $record['cbr_code'],
-                        'date'      =>  $record['date']->format('Y-m-d')
-                    ],
-                    [
-                        'cbr_code'  => $record['cbr_code'],
-                        'date'      => $record['date']->format('Y-m-d'),
-                        'price'     => $record['value']
-                    ]
-                );
-                $currencyRatio->price = $record['value'];
-                $currencyRatio->date = $record['date']->format('Y-m-d');
-                $currencyRatio->save();
+        if($dateTo){
+            foreach ($aCode as $code){
+                if($code and trim($code)!=''){
+                    $this->parseCurrency($code,$date,$dateTo);
+                }
             }
-
         }else{
             $result = (new CurrencyDaily())
                 ->setDate($date)
@@ -123,5 +106,41 @@ class updateCurrencyRatio extends Command
             }
         }
         $this->info("Курс обновлен!");
+    }
+
+
+    /**
+     * Обновление валюты для периуда
+     * @param string $cbrCode
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @return bool
+     * @throws \Exception
+     */
+    protected function parseCurrency(string $cbrCode, \DateTime $dateFrom, \DateTime $dateTo){
+        $result = (new CurrencyPeriod())
+            ->setDateFrom($dateFrom)
+            ->setDateTo($dateTo)
+            ->setCurrency($cbrCode)
+            ->request()
+            ->getResult();
+
+        foreach ($result['records'] as $record){
+            $currencyRatio = CurrencyRatio::query()->firstOrCreate(
+                [
+                    'cbr_code' =>  $record['cbr_code'],
+                    'date'      =>  $record['date']->format('Y-m-d')
+                ],
+                [
+                    'cbr_code'  => $record['cbr_code'],
+                    'date'      => $record['date']->format('Y-m-d'),
+                    'price'     => $record['value']
+                ]
+            );
+            $currencyRatio->price = $record['value'];
+            $currencyRatio->date = $record['date']->format('Y-m-d');
+            $currencyRatio->save();
+        }
+        return true;
     }
 }
