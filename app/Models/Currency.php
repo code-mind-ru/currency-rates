@@ -49,4 +49,11 @@ class Currency extends Model
     }
 
 
+    /**
+     * @param \DateTime $date
+     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
+     */
+    public function lastRate(){
+        return $this->rates()->orderBy("date",'desc')->limit(1)->get()->first();
+    }
 }

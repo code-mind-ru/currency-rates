@@ -17,5 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('currency', 'CurrencyController');
+
+Route::get('/currency','CurrencyController@index');
+//Route::resource('currency', 'CurrencyController');
 
