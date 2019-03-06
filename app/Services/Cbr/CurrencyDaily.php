@@ -117,7 +117,8 @@ class CurrencyDaily
             'char_code' => $charCode,
             'nominal'   => (float)trim(str_replace(',', '.', $oValue->Nominal)),
             'name'      => trim((string)$oValue->Name),
-            'value'     => (float)(str_replace(',', '.', $oValue->Value))
+            'value'     => (float)(str_replace(',', '.', $oValue->Value)),
+            'date'      => $this->resultDate,
         ];
     }
 
