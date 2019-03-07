@@ -81,6 +81,7 @@ class CurrencyDaily
 	public function getResult()
     {
         $xml = simplexml_load_string($this->result);
+        if(!$xml) return false;
         $this->resultDate = new DateTime(str_replace('.0', '.', (string)$xml->attributes()['Date']));
         $result = [
             'resultDate'=>$this->resultDate,

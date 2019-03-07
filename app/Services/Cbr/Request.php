@@ -36,8 +36,8 @@ class Request
     public function request()
 	{
 
-	    $result = Cache::store('file')->get(md5($this->url));
-	    if($result) return $result;
+	  $result = Cache::store('file')->get(md5($this->url));
+	  if($result) return $result;
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->url);

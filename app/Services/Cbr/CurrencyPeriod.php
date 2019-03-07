@@ -86,7 +86,10 @@ class CurrencyPeriod
      */
 	public function getResult()
 	{
+                
         $xml = simplexml_load_string($this->result);
+        if(!$xml) return false;
+        
         $cbrCode = trim((string) $xml->attributes()['ID']);
         $result = [
             'currency'=>[
