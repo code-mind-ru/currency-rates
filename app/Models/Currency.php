@@ -4,6 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Currency
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CurrencyRatio[] $rates
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Currency newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Currency newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Currency query()
+ * @mixin \Eloquent
+ */
 class Currency extends Model
 {
     /**
@@ -49,4 +58,12 @@ class Currency extends Model
     }
 
 
+    /**
+     * @param \DateTime $date
+     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
+     */
+    public function lastRate(){
+        //dd($this->rates()->orderBy("date",'desc')->limit(1)->get()->first());
+        return $this->rates()->orderBy("date",'desc')->limit(1)->get()->first();
+    }
 }

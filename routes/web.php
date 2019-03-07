@@ -13,9 +13,8 @@
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','CurrencyController@index')->name('home');
+Route::post('/currency','CurrencyController@generateReport')->name('currency_report');
+Route::get('/currency/{cbrCode}/{dateFrom}/{dateTo}','CurrencyController@currencyRatio')->name('currency_ratio');
 
-Route::resource('currency', 'CurrencyController');
 

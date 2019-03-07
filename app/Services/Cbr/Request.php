@@ -2,6 +2,8 @@
 
 namespace App\Cbr;
 
+use Illuminate\Support\Facades\Cache;
+
 class Request
 {
 	private $url;
@@ -33,6 +35,10 @@ class Request
      */
     public function request()
 	{
+
+	    $result = Cache::store('file')->get(md5($this->url));
+	    if($result) return $result;
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -51,6 +57,7 @@ class Request
 			throw new \Exception('Неверный URL');
 		}
 
+		Cache::store('file')->set(md5($this->url),$result,new \DateInterval("P365D"));
 		return $result;
 	}
 }

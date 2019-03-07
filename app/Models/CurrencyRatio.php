@@ -13,8 +13,18 @@ class CurrencyRatio extends Model
      */
     protected $table = 'currency_ratios';
 
+//    protected $casts = [
+//        'date' => 'date',
+//    ];
+//    protected $dates = [
+//        'date',
+//    ];
     protected $fillable = ['cbr_code', 'price','date'];
 
+
+    public function getDate(){
+        return new \DateTime($this->attributes['date']);
+    }
 
     public function currency()
     {

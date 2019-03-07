@@ -102,7 +102,7 @@ class CurrencyPeriod
         foreach ($xml->xpath('Record') as $oRecord){
             $date = new DateTime(trim((string) $oRecord->attributes()['Date']));
 
-            $result[$date->getTimestamp()] = [
+            $result['records'][$date->getTimestamp()] = [
                 'date'          => $date,
                 'cbr_code'      => $cbrCode,
                 'nominal'       => (float)trim(str_replace(',', '.',$oRecord->Nominal)),
