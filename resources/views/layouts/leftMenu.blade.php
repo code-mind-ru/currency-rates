@@ -15,13 +15,6 @@
                     Главная
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="/currency">
-                    <span data-feather="file"></span>
-                    Список валют <span class="sr-only">(current)</span>
-                </a>
-            </li>
-
         </ul>
     </div>
 </nav>

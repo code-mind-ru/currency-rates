@@ -7,6 +7,7 @@ use App\Cbr\CurrencyPeriod;
 use App\Models\Currency;
 
 use App\Models\CurrencyRatio;
+use DateTime;
 use Illuminate\Console\Command;
 
 class updateCurrencyRatio extends Command
@@ -17,7 +18,7 @@ class updateCurrencyRatio extends Command
      * @var string
      */
     protected $signature = 'command:updateCurrencyRatio 
-                    {--currency=all : Iso Code валюты } 
+                    {--currency=all : cbr Code валюты } 
                     {--date=now : Дата для которой обновить курс}
                     {--dateTo= : Дата окончания интервала для которой обновить курс}';
 
@@ -49,15 +50,15 @@ class updateCurrencyRatio extends Command
     {
 
         $currencyCode = trim($this->option('currency'));
-        $date = new \DateTime($this->option('date'));
-        $dateTo = ($this->option('dateTo')) ? new \DateTime($this->option('dateTo')) : false;
+        $date = new DateTime($this->option('date'));
+        $dateTo = ($this->option('dateTo')) ? new DateTime($this->option('dateTo')) : false;
 
 
         $aCode = [];
         if($currencyCode=='all'){
             $currencies = Currency::all();
         }else{
-            $currencies = Currency::query()->where('char_code','=',$currencyCode)->get();
+            $currencies = Currency::query()->where('cbr_code','=',$currencyCode)->get();
         }
         foreach ($currencies as $currency){
             $aCode[] = $currency->cbr_code;
@@ -112,12 +113,12 @@ class updateCurrencyRatio extends Command
     /**
      * Обновление валюты для периуда
      * @param string $cbrCode
-     * @param \DateTime $dateFrom
-     * @param \DateTime $dateTo
+     * @param DateTime $dateFrom
+     * @param DateTime $dateTo
      * @return bool
      * @throws \Exception
      */
-    protected function parseCurrency(string $cbrCode, \DateTime $dateFrom, \DateTime $dateTo){
+    protected function parseCurrency(string $cbrCode, DateTime $dateFrom, DateTime $dateTo){
         $result = (new CurrencyPeriod())
             ->setDateFrom($dateFrom)
             ->setDateTo($dateTo)
